@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mental Health Signal | Student Predictor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;1,600&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <h1>How is your digital life affecting your well-being?</h1>
+    <p>Answer a few questions about your habits and the model will estimate a mental health score for your profile.</p>
+  </header>
+
+  <main class="layout">
+    <form id="predict-form" novalidate>
+      <fieldset>
+        <legend><span class="num">01</span>About you</legend>
+        <div class="grid g3">
+          <div class="field">
+            <label class="lbl" for="Age">Age</label>
+            <input id="Age" type="number" name="Age" min="10" max="100" step="1" placeholder="e.g. 20">
+            <small class="hint">10–100</small>
+            <small class="err" data-for="Age"></small>
+          </div>
+          <div class="field">
+            <span class="lbl">Gender</span>
+            <div class="seg" data-name="Gender" data-options="Male,Female"></div>
+            <small class="err" data-for="Gender"></small>
+          </div>
+          <div class="field">
+            <label class="lbl" for="Country">Country</label>
+            <input id="Country" type="text" name="Country" list="countries" placeholder="e.g. India">
+            <datalist id="countries">
+              <option>India</option><option>USA</option><option>Canada</option><option>Australia</option>
+              <option>UK</option><option>Germany</option><option>Mexico</option><option>Turkey</option>
+              <option>France</option><option>Other</option>
+            </datalist>
+            <small class="hint">Not listed? Type it anyway.</small>
+            <small class="err" data-for="Country"></small>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num">02</span>Academic &amp; digital habits</legend>
+        <div class="grid">
+          <div class="field full">
+            <span class="lbl">Academic level</span>
+            <div class="seg" data-name="Academic_Level" data-options="High School,Undergraduate,Graduate"></div>
+            <small class="err" data-for="Academic_Level"></small>
+          </div>
+          <div class="field full">
+            <span class="lbl">Most-used platform</span>
+            <div class="seg wrap" data-name="Most_Used_Platform" data-options="Facebook,Instagram,KakaoTalk,LINE,LinkedIn,Snapchat,TikTok,Twitter,VKontakte,WeChat,WhatsApp,YouTube"></div>
+            <small class="err" data-for="Most_Used_Platform"></small>
+          </div>
+          <div class="field full">
+            <span class="lbl">Primary purpose</span>
+            <div class="seg" data-name="Purpose_Of_Use" data-options="Education,Entertainment,Networking,News"></div>
+            <small class="err" data-for="Purpose_Of_Use"></small>
+          </div>
+          <div class="field">
+            <label class="lbl" for="Avg_Daily_Usage_Hours">Avg. daily screen time</label>
+            <div class="unit"><input id="Avg_Daily_Usage_Hours" type="number" name="Avg_Daily_Usage_Hours" min="0" max="24" step="0.1" placeholder="e.g. 4.5"><span>hrs</span></div>
+            <small class="err" data-for="Avg_Daily_Usage_Hours"></small>
+          </div>
+          <div class="field">
+            <label class="lbl" for="Daily_Unlocks">Daily phone unlocks</label>
+            <input id="Daily_Unlocks" type="number" name="Daily_Unlocks" min="0" step="1" placeholder="e.g. 60">
+            <small class="err" data-for="Daily_Unlocks"></small>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="num">03</span>Lifestyle &amp; stress</legend>
+        <div class="grid g3">
+          <div class="field">
+            <label class="lbl" for="Study_Hours">Study hours / day</label>
+            <div class="unit"><input id="Study_Hours" type="number" name="Study_Hours" min="0" max="24" step="0.1" placeholder="e.g. 3"><span>hrs</span></div>
+            <small class="err" data-for="Study_Hours"></small>
+          </div>
+          <div class="field">
+            <label class="lbl" for="Physical_Activity_Hours">Physical activity / day</label>
+            <div class="unit"><input id="Physical_Activity_Hours" type="number" name="Physical_Activity_Hours" min="0" max="24" step="0.1" placeholder="e.g. 1"><span>hrs</span></div>
+            <small class="err" data-for="Physical_Activity_Hours"></small>
+          </div>
+          <div class="field">
+            <label class="lbl" for="Sleep_Hours_Per_Night">Sleep / night</label>
+            <div class="unit"><input id="Sleep_Hours_Per_Night" type="number" name="Sleep_Hours_Per_Night" min="0" max="24" step="0.1" placeholder="e.g. 7"><span>hrs</span></div>
+            <small class="err" data-for="Sleep_Hours_Per_Night"></small>
+          </div>
+          <div class="field full">
+            <span class="lbl">Perceived stress level</span>
+            <div class="seg" data-name="Stress_Level" data-options="Low,Medium,High,Very High"></div>
+            <small class="err" data-for="Stress_Level"></small>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="submit" id="submit-btn">Read my signal</button>
+        <button type="reset" class="ghost">Clear form</button>
+      </div>
+    </form>
+
+    <aside class="panel" aria-live="polite">
+      <section id="state-empty" class="state">
+        <svg class="arc" viewBox="0 0 200 110" aria-hidden="true"><path class="arc-track" d="M20 100 A80 80 0 0 1 180 100"/></svg>
+        <h2>Your score will appear here</h2>
+        <p>Fill in the form and submit to generate a predicted mental health score from 0–10.</p>
+      </section>
+
+      <section id="state-loading" class="state" hidden>
+        <div class="spinner" role="status" aria-label="Loading"></div>
+        <h2>Reading the signal…</h2>
+        <p>Running your habits through the model.</p>
+      </section>
+
+      <section id="state-result" class="state" hidden>
+        <div class="gauge">
+          <svg class="arc" viewBox="0 0 200 110" aria-hidden="true">
+            <path class="arc-track" d="M20 100 A80 80 0 0 1 180 100"/>
+            <path id="arc-bar" class="arc-bar" pathLength="100" d="M20 100 A80 80 0 0 1 180 100"/>
+            <circle id="arc-dot" r="6" cx="20" cy="100"/>
+          </svg>
+          <div class="gauge-text"><span id="score-value">0</span><span class="of">/10</span></div>
+        </div>
+        <h2 id="score-label"></h2>
+        <p id="score-note"></p>
+        <button type="button" id="again-btn" class="ghost">Run another read</button>
+        <p class="fine">A statistical estimate from a machine learning model, not a diagnosis. If you are struggling, talk to a counselor or doctor.</p>
+      </section>
+
+      <section id="state-error" class="state" hidden>
+        <div class="icon-err" aria-hidden="true">!</div>
+        <h2 id="error-title">Something went wrong</h2>
+        <p id="error-message"></p>
+        <button type="button" id="retry-btn" class="ghost">Dismiss</button>
+      </section>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
