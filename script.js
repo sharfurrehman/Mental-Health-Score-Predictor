@@ -148,7 +148,7 @@ async function submitPrediction(data) {
   showState("loading");
   submitBtn.disabled = true;
   try {
-    const response = await fetch(API_URL, {
+    const response = await fetch(`${API_URL}/predict`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -164,7 +164,7 @@ async function submitPrediction(data) {
       return;
     }
     if (!response.ok) {
-      showError("The server hit a problem", `The API returned status ${response.status}. Check the uvicorn terminal for details.`);
+      showError("The server hit a problem", `The API returned status ${response.status}. Check the backend logs on Render for details.`);
       return;
     }
     if (!body || typeof body.predicted_score !== "number") {
