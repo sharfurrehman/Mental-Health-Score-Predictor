@@ -68,4 +68,4 @@ def predict(data: s_data):
     }])
 
     prediction = model.predict(input_row)[0]
-    return PredictionResponse(predicted_score=round(float(prediction)))
+    return PredictionResponse(predicted_score=round(float(prediction),2))

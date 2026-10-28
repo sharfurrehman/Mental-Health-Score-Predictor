@@ -1,4 +1,4 @@
-const API_URL = "http://127.0.0.1:8000/predict"; // change the port if your server runs elsewhere
+const API_URL = "https://mental-health-score-predictor-eru4.onrender.com"; // change the port if your server runs elsewhere
 
 // Assumes the model predicts a score from 0-10 where higher means better well-being.
 const MAX_SCORE = 10;
